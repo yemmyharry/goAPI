@@ -2,17 +2,25 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"net/http"
+	"goAPI/config"
+	"goAPI/controller"
+	"gorm.io/gorm"
 )
 
-func main()  {
+var (
+	db             *gorm.DB                  = config.Dbsetup()
+	authController controller.AuthController = controller.NewAuthController()
+)
+
+func main() {
+	defer config.CloseDBConnection(db)
 	r := gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "hello world",
-		})
-	})
-	r.Run("8080")
+
+	authRoutes := r.Group("/api/auth")
+	{
+		authRoutes.POST("/login", authController.Login)
+		authRoutes.POST("/register", authController.Register)
+	}
+	r.Run()
 
 }
-
