@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-func dbsetup() *gorm.DB {
+func Dbsetup() *gorm.DB {
 	errN := godotenv.Load()
 	if errN != nil {
 		log.Fatal("failed to load env file")
@@ -31,7 +31,7 @@ func dbsetup() *gorm.DB {
 
 }
 
-func closeDBConnection(db *gorm.DB) {
+func CloseDBConnection(db *gorm.DB) {
 	dbsql, errN := db.DB()
 	if errN != nil {
 		log.Fatal("failed to close connection from database")
