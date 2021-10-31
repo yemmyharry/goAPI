@@ -3,8 +3,8 @@ package config
 import (
 	"fmt"
 	"github.com/joho/godotenv"
-	"gorm.io/gorm"
 	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 	"log"
 	"os"
 )
@@ -29,4 +29,15 @@ func dbsetup() *gorm.DB {
 
 	return db
 
+}
+
+func closeDBConnection(db *gorm.DB) {
+	dbsql, errN := db.DB()
+	if errN != nil {
+		log.Fatal("failed to close connection from database")
+	}
+	err := dbsql.Close()
+	if err != nil {
+		return
+	}
 }
